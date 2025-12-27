@@ -8,6 +8,12 @@ const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
 function ToastPlayground() {
   const [message, setMessage] = React.useState("");
+  const [variant, setVariant] = React.useState("notice");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    // TODO: show toast
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -16,7 +22,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <div className={styles.controlsWrapper}>
+      <form onSubmit={onSubmit} className={styles.controlsWrapper}>
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -27,6 +33,7 @@ function ToastPlayground() {
           </label>
           <div className={styles.inputWrapper}>
             <textarea
+              required
               id="message"
               className={styles.messageInput}
               value={message}
@@ -38,15 +45,17 @@ function ToastPlayground() {
         <div className={styles.row}>
           <div className={styles.label}>Variant</div>
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-            {VARIANT_OPTIONS.map((variant) => (
-              <label htmlFor={`variant-${variant}`}>
+            {VARIANT_OPTIONS.map((v) => (
+              <label key={v} htmlFor={`variant-${v}`}>
                 <input
-                  id={`variant-${variant}`}
+                  id={`variant-${v}`}
                   type="radio"
                   name="variant"
-                  value={variant}
+                  value={v}
+                  checked={v === variant}
+                  onChange={(e) => setVariant(e.target.value)}
                 />
-                {variant}
+                {v}
               </label>
             ))}
           </div>
@@ -58,7 +67,7 @@ function ToastPlayground() {
             <Button>Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
