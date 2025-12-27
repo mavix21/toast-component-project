@@ -4,25 +4,19 @@ import Button from "../Button";
 
 import styles from "./ToastPlayground.module.css";
 import ToastShelf from "../ToastShelf";
+import { useToast } from "../ToastProvider";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
 function ToastPlayground() {
   const [message, setMessage] = React.useState("");
   const [variant, setVariant] = React.useState("notice");
-  const [notifications, setNotifications] = React.useState([]);
+  const toast = useToast();
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    setNotifications((currentNotifications) => [
-      ...currentNotifications,
-      {
-        id: crypto.randomUUID(),
-        message,
-        variant,
-      },
-    ]);
+    toast(message, variant);
 
     setMessage("");
     setVariant("notice");
@@ -35,8 +29,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {/* <Toast message={message} variant={variant} onClose={onToastClose} />*/}
-      <ToastShelf notifications={notifications} />
+      <ToastShelf />
 
       <form onSubmit={onSubmit} className={styles.controlsWrapper}>
         <div className={styles.row}>
